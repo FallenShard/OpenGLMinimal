@@ -42,5 +42,8 @@
   <ItemGroup>
     <None Include="default.frag" />
     <None Include="default.vert" />
+    <None Include="default.tese" />
+    <None Include="default.tesc" />
+    <None Include="default.geom" />
   </ItemGroup>
 </Project>

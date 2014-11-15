@@ -25,6 +25,9 @@ GLint createProgram(std::string vShader, std::string fShader)
     GLint fShaderId = createShader(GL_FRAGMENT_SHADER, fShader);
     if (fShaderId == -1)
         return -1;
+
+    GLint tcShaderId = createShader(GL_TESS_CONTROL_SHADER, "default.tesc");
+    GLint teShaderId = createShader(GL_TESS_EVALUATION_SHADER, "default.tese");
     
     // Create a program which will link the shaders
     // So, after creating shaders, we need something to link them into a single unit
@@ -34,6 +37,8 @@ GLint createProgram(std::string vShader, std::string fShader)
     // This function associates programId with a shaderId provided
     glAttachShader(progId, vShaderId);
     glAttachShader(progId, fShaderId);
+    glAttachShader(progId, tcShaderId);
+    glAttachShader(progId, teShaderId);
 
     // Linking the program, will produce linked binary code for the GPU to use
     glLinkProgram(progId);

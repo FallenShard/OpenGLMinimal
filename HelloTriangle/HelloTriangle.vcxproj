@@ -23,6 +23,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="default.frag" />
+    <None Include="default.geom" />
+    <None Include="default.tesc" />
+    <None Include="default.tese" />
     <None Include="default.vert" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

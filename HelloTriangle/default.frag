@@ -10,7 +10,7 @@
 // in means that it is an input variable, coming from one of previous vertex stages
 // such as vertex shader, vec4 is well, array of 4 floats and fColor has to match the 
 // name specified in vertexShader
-smooth in vec4 fColor;
+smooth in vec4 tesColor;
 
 // Fragment shader's only purpose is to provide color to a pixel, as it works per-pixel (in parallel)
 // There's no other way for that color to go anywhere, so we specif
@@ -19,5 +19,5 @@ out vec4 finalColor;
 void main()
 {
     // That's about it, we simply pass interpolated color to final color for the pixel
-    finalColor = fColor;
+    finalColor = tesColor;
 }

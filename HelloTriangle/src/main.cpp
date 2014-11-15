@@ -9,24 +9,27 @@ GLuint vao;
 GLuint vbo, ibo;
 GLint program;
 
-GLuint noOfVertices = 3;
+GLuint noOfVertices = 4;
 
 GLfloat vertices[] = 
 {
   //  X      Y      Z
     -0.5f, -0.5f, -1.f, // Vertex 0
      0.5f, -0.5f, -1.f, // Vertex 1
-     0.0f,  0.5f, -1.f, // Vertex 2
+     0.5f,  0.5f, -1.f, // Vertex 2
+    -0.5f,  0.5f, -1.f, // Vertex 3 
 
   //  R    G    B    A
-     1.f, 0.f, 0.f, 1.f, // Color for vertex 0
+     1.f, 0.f, 1.f, 1.f, // Color for vertex 0
      0.f, 1.f, 0.f, 1.f, // Color for vertex 1
-     0.f, 0.f, 1.f, 1.f  // Color for vertex 2
+     0.f, 1.f, 1.f, 1.f, // Color for vertex 2
+     1.f, 1.f, 1.f, 1.f
 };
 
 GLushort faces[] = 
 {
-    0, 1, 2 // Only one face, we're drawing just one triangle
+    //0, 2, 3, // Only one face, we're drawing just one triangle
+    0, 1, 2, 3
 };
 
 void init()
@@ -51,7 +54,7 @@ void init()
 
     // Use the active buffer at target GL_ARRAY_BUFFER (in our case vbo), and populate it with data
     // 2nd argument is the size in bytes, third is pointer to data array and last is hint usage (not important for now)
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices) * sizeof(GLfloat), vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
     // Unbind vbo as GL_ARRAY_BUFFER, we're done using it for now
     glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -63,7 +66,7 @@ void init()
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
 
     // Same as above, we tell OpenGL the size of the array, along with array pointer
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(faces) * sizeof(GLushort), faces, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(faces), faces, GL_STATIC_DRAW);
     
     // Unbind the array from this target, we're done "modifying" it (using it) for now
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
@@ -95,7 +98,7 @@ void init()
 
     // Bind the ibo again, and this will automatically associate ibo with active VAO (in our case vao), just this call, nothing else
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-
+    glPatchParameteri(GL_PATCH_VERTICES, 4);
     // At this point, we associated active GL_ARRAY_BUFFER (vbo) with our vao, and we associated active GL_ELEMENT_ARRAY_BUFFER(ibo) with our vao
     // That means we can "unbind" the vao, it has all the information it needs for rendering our triangle
     glBindVertexArray(0);
@@ -103,6 +106,8 @@ void init()
     // This simply sets the color used to clear the screen to what we want (dark gray here)
     // It DOESN'T clear the screen, glCLear(GL_COLOR_BUFFER_BIT) does that
     glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+
+    
 }
 
 void display()
@@ -117,14 +122,16 @@ void display()
     glBindVertexArray(vao);
 
     // Whichever we use from below will work
-    //glDrawArrays(GL_TRIANGLES, 0, 3);
+    //glDrawArrays(GL_TRIANGLES, 0, 4);
 
     // This call renders while using GL_ELEMENT_ARRAY_BUFFER we bound to vao above, as its index buffer
     // We need, type of primitve (GL_TRIANGLES here, it could be points, lines whatever)
-    // How many vertices we have total (3)
+    // How many face values we have total (3)
     // Type of index data (GLushort), as glenum that is GL_UNSIGNED_SHORT
     // And finally, the offset into our faces[] array we assigned to ibo (0, we want all that data, one face)
-    glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_SHORT, 0);
+    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    //glDrawElements(GL_PATCHES, 4, GL_UNSIGNED_SHORT, 0);
+    glDrawArrays(GL_PATCHES, 0, 4);
 
     // Unbind vao, now, as you can see, to render multiple different objects, you bind vaos in a loop in successio, that's how easy it is
     glBindVertexArray(0);

@@ -10,12 +10,16 @@ in vec4 color;
 // so we pass the color, it will be interpolated smoothly on the way (as specified by 'smooth' keyword)
 // out means it will be handled in next shader stage (fragment shader)
 // vec4 is array of 4 floats, fColor is just a name we picked (it has to be same on the other side though)
-smooth out vec4 fColor;
+
+out VertexData
+{
+    vec4 color;
+} vData;
 
 void main()
 {
     // So we pass that color we received from the program, in that vertex buffer, as described there
-    fColor = color;
+    vData.color = color;
 
     // Let's determine that position
 
